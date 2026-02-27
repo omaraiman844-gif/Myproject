@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: business-backend
+    env: python
+    plan: free
+    rootDir: .
+    buildCommand: ./build.sh
+    startCommand: gunicorn Businessproject.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://your-frontend.vercel.app
+      - key: DATABASE_URL
+        fromDatabase:
+          name: business-db
+          property: connectionString
+
+databases:
+  - name: business-db
+    plan: free
